@@ -2,8 +2,8 @@ module Exercise
   module Arrays
     class << self
       def find_max(array)
-        el_max = nil
-        array.each { |el| el_max = el if el_max.nil? || el_max < el }
+        el_max = array.first
+        array[1..].each { |el| el > el_max ? el_max = el : el_max }
         el_max
       end
 
@@ -12,23 +12,19 @@ module Exercise
         array.map { |el| el.negative? ? el : el_max }
       end
 
-      def search(array, query)
-        search_helper(array, query, 0, array.length)
-      end
-
-      def search_helper(array, query, min, max)
-        mid = get_mid(min, max)
+      def search(array, query, first = 0, last = array.length)
+        mid = get_mid(first, last)
         return mid if array[mid] == query
 
-        return -1 if max <= min || mid.zero?
+        return -1 if last <= first || mid.zero?
 
-        array[mid] < query ? search_helper(array, query, mid, max) : search_helper(array, query, min, mid - 1)
+        array[mid] < query ? search(array, query, mid + 1, last) : search(array, query, first, mid)
       end
 
-      def get_mid(min, max)
-        return 0 if max == 1
+      def get_mid(first, last)
+        return 0 if last == 1
 
-        ((max - min) / 2.0).ceil + min
+        first + ((last - first) / 2)
       end
     end
   end
