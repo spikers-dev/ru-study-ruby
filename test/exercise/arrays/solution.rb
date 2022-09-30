@@ -3,7 +3,7 @@ module Exercise
     class << self
       def find_max(array)
         el_max = array.first
-        array[1..].each { |el| el > el_max ? el_max = el : el_max }
+        array[1..].each { |el| el_max = el if el > el_max }
         el_max
       end
 
@@ -13,10 +13,12 @@ module Exercise
       end
 
       def search(array, query, first = 0, last = array.length)
+        return -1 if query < first && query > last
+
         mid = get_mid(first, last)
         return mid if array[mid] == query
 
-        return -1 if last <= first || mid.zero?
+        return -1 if last <= first
 
         array[mid] < query ? search(array, query, mid + 1, last) : search(array, query, first, mid)
       end
