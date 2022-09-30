@@ -15,10 +15,10 @@ module Exercise
       def search(array, query, first = 0, last = array.length)
         return -1 if query < first && query > last
 
+        return -1 if last <= first
+
         mid = get_mid(first, last)
         return mid if array[mid] == query
-
-        return -1 if last <= first
 
         array[mid] < query ? search(array, query, mid + 1, last) : search(array, query, first, mid)
       end
