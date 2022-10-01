@@ -1,22 +1,20 @@
 module Exercise
   module Fp2
     class MyArray < Array
-      def my_each
-        for el in self
-          yield el
-        end
+      def my_each(&func)
+        return self if size.zero?
+
+        yield first
+        self.class.new(self[1..]).my_each(&func)
+        self
       end
 
       def my_map
-        result = MyArray.new
-        my_each do |el|
-          result << yield(el)
-        end
-        result
+        my_reduce(self.class.new) { |acc, el| acc << yield(el) }
       end
 
       def my_compact
-        MyArray.new(self - [nil])
+        my_reduce(self.class.new) { |acc, el| el.nil? ? acc : acc << el }
       end
 
       def my_reduce(acc = nil)
