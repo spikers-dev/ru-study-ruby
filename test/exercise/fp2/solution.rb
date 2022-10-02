@@ -17,11 +17,11 @@ module Exercise
         my_reduce(self.class.new) { |acc, el| el.nil? ? acc : acc << el }
       end
 
-      def my_reduce(acc = nil)
-        my_each do |el|
-          acc = acc.nil? ? el : yield(acc, el)
-        end
-        acc
+      def my_reduce(acc = nil, &func)
+        return acc if size.zero?
+
+        acc = acc.nil? ? first : yield(acc, first)
+        self.class.new(self[1..]).my_reduce(acc, &func)
       end
     end
   end
